@@ -1,0 +1,109 @@
+{
+  "company": "NovaDesk AI",
+  "version": "1.0",
+  "last_updated": "2026-05-22",
+  "refund_policies": [
+    {
+      "id": "RP-001",
+      "policy_name": "Standard Monthly Refund",
+      "description": "Covers refund requests for monthly subscription charges within the standard refund window. Applies to Starter and Growth plan subscribers on monthly billing cycles.",
+      "conditions": [
+        "Refund request must be submitted within 14 days of the charge date",
+        "Account must not have consumed more than 20% of the monthly API quota",
+        "No prior refund issued on the same account within the last 90 days",
+        "User must provide a valid reason for the refund request"
+      ],
+      "refund_window_days": 14,
+      "max_refund_amount": 99.00,
+      "escalation_required": false,
+      "approval_level": "automated",
+      "exceptions": [
+        "Usage-based overage charges are non-refundable",
+        "Add-on seat purchases are non-refundable once activated",
+        "Promotional or discounted subscriptions may have modified refund terms"
+      ]
+    },
+    {
+      "id": "RP-002",
+      "policy_name": "Annual Plan Prorated Refund",
+      "description": "Handles refund requests for annual subscription plans. Refunds are prorated based on the remaining unused months in the billing cycle, minus a 10% early termination fee.",
+      "conditions": [
+        "Refund request must be submitted within 30 days of the annual charge date for full refund eligibility",
+        "Prorated refunds are available after the 30-day window based on unused months",
+        "Account must not have any outstanding invoices or balance due",
+        "A 10% early termination fee applies to prorated refunds after the first 30 days"
+      ],
+      "refund_window_days": 30,
+      "max_refund_amount": 1188.00,
+      "escalation_required": false,
+      "approval_level": "support_agent",
+      "exceptions": [
+        "Enterprise annual contracts are governed by the Master Service Agreement and are excluded from this policy",
+        "Startup Program and nonprofit discounted plans follow the standard monthly refund policy regardless of billing cycle",
+        "Refunds are issued as account credit unless a full cancellation is confirmed"
+      ]
+    },
+    {
+      "id": "RP-003",
+      "policy_name": "Enterprise Contract Refund",
+      "description": "Governs refund and credit requests for Enterprise plan subscribers operating under a Master Service Agreement (MSA). Requires multi-level approval and review by the Customer Success and Finance teams.",
+      "conditions": [
+        "Refund request must reference a specific MSA clause or SLA breach",
+        "Customer Success Manager must validate the claim before escalation",
+        "Finance team must approve refunds exceeding $1,000",
+        "Service credit alternative must be offered before processing a cash refund",
+        "30-day written notice required for contract-related refund claims"
+      ],
+      "refund_window_days": 60,
+      "max_refund_amount": 25000.00,
+      "escalation_required": true,
+      "approval_level": "finance_director",
+      "exceptions": [
+        "SLA-breach credits are calculated separately per the uptime guarantee terms",
+        "Custom integrations, professional services, and onboarding fees are non-refundable",
+        "Disputes unresolved within 30 days are escalated to the VP of Customer Operations"
+      ]
+    },
+    {
+      "id": "RP-004",
+      "policy_name": "High-Value Refund Escalation",
+      "description": "Any refund request exceeding $500 is automatically flagged for manual review and requires escalation to a senior support agent or finance team member, regardless of plan type.",
+      "conditions": [
+        "Refund amount exceeds $500 in a single request or cumulative within a 90-day period",
+        "System automatically flags and pauses the refund for manual review",
+        "Senior support agent must verify account history and usage patterns",
+        "Finance team approval required for refunds exceeding $2,000",
+        "Legal review triggered if the refund request involves a dispute or chargeback threat"
+      ],
+      "refund_window_days": 30,
+      "max_refund_amount": 25000.00,
+      "escalation_required": true,
+      "approval_level": "senior_support_lead",
+      "exceptions": [
+        "Enterprise SLA credits are processed separately and do not count toward the $500 threshold",
+        "Chargebacks initiated through the payment provider bypass this policy and are handled by the disputes team",
+        "Bulk refunds for billing system errors are handled under the incident response policy"
+      ]
+    },
+    {
+      "id": "RP-005",
+      "policy_name": "Refund Abuse Prevention",
+      "description": "Prevents abuse of the refund system by flagging accounts with excessive or suspicious refund patterns. Accounts triggering this policy may be restricted from future refund eligibility.",
+      "conditions": [
+        "More than 2 refund requests within a 180-day period from the same account",
+        "Refund request submitted after consuming more than 80% of the monthly API quota",
+        "Pattern of subscribing, using services, and requesting refunds detected across multiple billing cycles",
+        "Account flagged by automated fraud detection for suspicious payment or usage behavior"
+      ],
+      "refund_window_days": 14,
+      "max_refund_amount": 0.00,
+      "escalation_required": true,
+      "approval_level": "trust_and_safety",
+      "exceptions": [
+        "Legitimate billing errors verified by the system are exempt from abuse flags",
+        "Accounts with a clean history of 12+ months may receive a one-time exception at a senior agent's discretion",
+        "Enterprise accounts are reviewed by the Customer Success Manager before any abuse flag is applied"
+      ]
+    }
+  ]
+}

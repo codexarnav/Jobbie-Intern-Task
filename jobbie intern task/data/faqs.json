@@ -1,0 +1,127 @@
+{
+  "company": "NovaDesk AI",
+  "version": "1.0",
+  "last_updated": "2026-05-22",
+  "faqs": [
+    {
+      "id": "FAQ-001",
+      "category": "billing",
+      "question": "How do I update my payment method on file?",
+      "answer": "You can update your payment method by navigating to Settings → Billing → Payment Methods in your NovaDesk AI dashboard. We accept Visa, Mastercard, American Express, and ACH bank transfers for annual plans. Changes take effect immediately and will apply to your next billing cycle.",
+      "tags": ["payment", "billing", "credit card", "update"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-002",
+      "category": "billing",
+      "question": "Why was I charged twice this month?",
+      "answer": "Duplicate charges can occur if a payment initially failed and was retried, or if you upgraded your plan mid-cycle. Please check your billing history under Settings → Billing → Invoices. If you see a legitimate duplicate charge, contact our support team within 14 days and we will issue a full refund for the duplicate amount.",
+      "tags": ["duplicate charge", "billing error", "refund", "payment"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-003",
+      "category": "pricing",
+      "question": "What happens if I exceed my monthly API quota?",
+      "answer": "When you exceed your monthly API quota, additional requests are billed at the overage rate specific to your plan: Starter at $0.006/request, Growth at $0.004/request, and Enterprise at custom negotiated rates. You will receive email notifications at 80% and 95% usage thresholds. You can also set hard caps in Settings → API → Usage Limits to prevent unexpected charges.",
+      "tags": ["API limits", "overage", "quota", "pricing", "rate limit"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-004",
+      "category": "subscriptions",
+      "question": "Can I switch from a monthly to an annual plan?",
+      "answer": "Yes, you can switch to an annual plan at any time from Settings → Billing → Plan Management. Annual plans offer a 20% discount compared to monthly billing. When you switch, we will prorate the remaining days on your current monthly cycle and apply that credit toward your annual subscription.",
+      "tags": ["annual", "monthly", "plan change", "subscription", "discount"],
+      "priority": "medium"
+    },
+    {
+      "id": "FAQ-005",
+      "category": "refunds",
+      "question": "How do I request a refund?",
+      "answer": "To request a refund, go to Settings → Billing → Invoices, select the invoice in question, and click 'Request Refund.' Refund requests must be submitted within 14 days of the charge for monthly plans and within 30 days for annual plans. Refunds are processed within 5–10 business days. Note that usage-based charges and overage fees are non-refundable once the API calls have been consumed.",
+      "tags": ["refund", "billing", "invoice", "money back"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-006",
+      "category": "API limits",
+      "question": "What are the rate limits for the NovaDesk AI API?",
+      "answer": "Rate limits vary by plan: Starter allows 60 requests/minute and 10,000 requests/month, Growth allows 200 requests/minute and 50,000 requests/month, and Enterprise plans have custom rate limits based on your contract. Rate-limited requests receive a 429 HTTP status code with a Retry-After header indicating when to retry.",
+      "tags": ["rate limit", "API", "throttle", "429", "requests per minute"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-007",
+      "category": "enterprise support",
+      "question": "Does NovaDesk AI offer a dedicated account manager for enterprise clients?",
+      "answer": "Yes, all Enterprise plan subscribers are assigned a dedicated Customer Success Manager (CSM) who provides onboarding assistance, quarterly business reviews, and priority escalation handling. Your CSM is available via direct Slack channel, email, and scheduled calls. Contact enterprise@novadesk.ai to get connected.",
+      "tags": ["enterprise", "account manager", "CSM", "dedicated support"],
+      "priority": "medium"
+    },
+    {
+      "id": "FAQ-008",
+      "category": "billing",
+      "question": "I need an invoice for tax purposes. Where can I download it?",
+      "answer": "All invoices are available for download as PDF or CSV from Settings → Billing → Invoices. You can also configure automatic invoice delivery to your finance team's email under Settings → Billing → Notifications. For custom invoice formats required by your organization, please contact billing@novadesk.ai.",
+      "tags": ["invoice", "tax", "download", "PDF", "billing"],
+      "priority": "low"
+    },
+    {
+      "id": "FAQ-009",
+      "category": "subscriptions",
+      "question": "How do I cancel my subscription?",
+      "answer": "You can cancel your subscription from Settings → Billing → Plan Management → Cancel Plan. Your access will remain active until the end of your current billing period. For annual plans, cancellation takes effect at the end of the annual term unless you qualify for a prorated refund under our refund policy. Enterprise contracts require 30 days written notice.",
+      "tags": ["cancel", "subscription", "downgrade", "terminate"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-010",
+      "category": "pricing",
+      "question": "Do you offer discounts for startups or nonprofits?",
+      "answer": "Yes, NovaDesk AI offers a Startup Program with 50% off Growth plans for qualified startups (under $5M in funding, less than 3 years old). We also provide a 30% discount for registered 501(c)(3) nonprofits and educational institutions. Apply through our website at novadesk.ai/programs or contact sales@novadesk.ai.",
+      "tags": ["discount", "startup", "nonprofit", "education", "pricing"],
+      "priority": "medium"
+    },
+    {
+      "id": "FAQ-011",
+      "category": "API limits",
+      "question": "My API calls keep timing out. Is there a server issue?",
+      "answer": "API timeouts can be caused by several factors: exceeding your rate limit (check for 429 responses), large payload sizes (max 10MB per request), or regional latency. Check our status page at status.novadesk.ai for any ongoing incidents. If the issue persists, enable debug logging with the X-NovaDesk-Debug header and contact support with the request trace ID.",
+      "tags": ["timeout", "API", "server", "latency", "debug", "status"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-012",
+      "category": "refunds",
+      "question": "I was charged after I thought I cancelled. Can I get my money back?",
+      "answer": "If you were charged after submitting a cancellation request, it may be because the cancellation was not fully processed or the charge occurred before the cancellation took effect. Please verify your cancellation confirmation email and check Settings → Billing → Plan Status. If the charge was made in error, submit a refund request within 14 days and our team will review it within 48 hours.",
+      "tags": ["charged after cancel", "refund", "cancellation error", "billing dispute"],
+      "priority": "high"
+    },
+    {
+      "id": "FAQ-013",
+      "category": "enterprise support",
+      "question": "What SLA guarantees come with the Enterprise plan?",
+      "answer": "Enterprise plans include a 99.95% uptime SLA with service credits for any downtime exceeding the guarantee. Critical issues (P0) have a 15-minute response time, high-priority issues (P1) have a 1-hour response time, and standard issues (P2) have a 4-hour response time. SLA details are outlined in your Master Service Agreement.",
+      "tags": ["SLA", "uptime", "enterprise", "response time", "service credits"],
+      "priority": "medium"
+    },
+    {
+      "id": "FAQ-014",
+      "category": "subscriptions",
+      "question": "Can I add more team members to my current plan?",
+      "answer": "Starter plans support up to 3 team members, Growth plans up to 15, and Enterprise plans have unlimited seats. Additional seats beyond your plan's limit can be purchased at $12/seat/month for Starter and $8/seat/month for Growth. Manage team members from Settings → Team → Members. Enterprise clients should contact their CSM for bulk seat additions.",
+      "tags": ["team", "seats", "add users", "members", "collaboration"],
+      "priority": "medium"
+    },
+    {
+      "id": "FAQ-015",
+      "category": "pricing",
+      "question": "What's the difference between the Growth and Enterprise plans?",
+      "answer": "The Growth plan ($99/month) includes 50,000 API requests/month, 200 req/min rate limit, email and chat support with 4-hour response time, and up to 15 team seats. The Enterprise plan (custom pricing) offers unlimited API requests, custom rate limits, a dedicated CSM, 99.95% uptime SLA, SSO/SAML integration, audit logs, custom data retention policies, and 24/7 priority support with a 15-minute P0 response time. Contact sales@novadesk.ai for a custom quote.",
+      "tags": ["growth", "enterprise", "comparison", "features", "pricing"],
+      "priority": "medium"
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "company": "NovaDesk AI",
+  "version": "1.0",
+  "last_updated": "2026-05-22",
+  "currency": "USD",
+  "plans": [
+    {
+      "id": "PLAN-STARTER",
+      "name": "Starter",
+      "description": "Ideal for individual developers and small projects getting started with AI-powered APIs. Includes essential features with community support.",
+      "pricing": {
+        "monthly": 29.00,
+        "annual": 278.40,
+        "annual_discount_percent": 20,
+        "billing_cycles": ["monthly", "annual"]
+      },
+      "api_quotas": {
+        "requests_per_month": 10000,
+        "rate_limit_per_minute": 60,
+        "max_payload_size_mb": 5,
+        "concurrent_connections": 10
+      },
+      "features": [
+        "Access to all standard AI API endpoints",
+        "10,000 API requests per month",
+        "60 requests per minute rate limit",
+        "Up to 3 team members",
+        "Community forum access",
+        "Basic analytics dashboard",
+        "Email support (48-hour response time)",
+        "Standard webhook integrations",
+        "99.5% uptime commitment",
+        "7-day data retention"
+      ],
+      "support_tier": {
+        "level": "basic",
+        "channels": ["email", "community_forum"],
+        "response_time_hours": 48,
+        "availability": "business_hours",
+        "dedicated_csm": false
+      },
+      "overage_rates": {
+        "per_request": 0.006,
+        "per_additional_seat_monthly": 12.00,
+        "overage_cap_multiplier": 2.0,
+        "overage_cap_description": "Overage is capped at 2x your monthly quota. Requests beyond 20,000 are rejected until the next billing cycle unless you upgrade."
+      },
+      "limits": {
+        "max_team_members": 3,
+        "max_projects": 5,
+        "max_api_keys": 3,
+        "data_retention_days": 7,
+        "log_retention_days": 7
+      }
+    },
+    {
+      "id": "PLAN-GROWTH",
+      "name": "Growth",
+      "description": "Built for growing teams and production workloads that need higher throughput, advanced features, and faster support response times.",
+      "pricing": {
+        "monthly": 99.00,
+        "annual": 950.40,
+        "annual_discount_percent": 20,
+        "billing_cycles": ["monthly", "annual"]
+      },
+      "api_quotas": {
+        "requests_per_month": 50000,
+        "rate_limit_per_minute": 200,
+        "max_payload_size_mb": 10,
+        "concurrent_connections": 50
+      },
+      "features": [
+        "Everything in Starter, plus:",
+        "50,000 API requests per month",
+        "200 requests per minute rate limit",
+        "Up to 15 team members",
+        "Advanced analytics and usage reports",
+        "Email and live chat support (4-hour response time)",
+        "Priority webhook delivery",
+        "Custom API key scoping and permissions",
+        "Role-based access control (RBAC)",
+        "99.9% uptime SLA",
+        "30-day data retention",
+        "Workflow automation builder",
+        "Staging environment access"
+      ],
+      "support_tier": {
+        "level": "priority",
+        "channels": ["email", "live_chat"],
+        "response_time_hours": 4,
+        "availability": "extended_hours",
+        "dedicated_csm": false
+      },
+      "overage_rates": {
+        "per_request": 0.004,
+        "per_additional_seat_monthly": 8.00,
+        "overage_cap_multiplier": 3.0,
+        "overage_cap_description": "Overage is capped at 3x your monthly quota. Requests beyond 150,000 are rejected until the next billing cycle unless you upgrade."
+      },
+      "limits": {
+        "max_team_members": 15,
+        "max_projects": 25,
+        "max_api_keys": 15,
+        "data_retention_days": 30,
+        "log_retention_days": 30
+      }
+    },
+    {
+      "id": "PLAN-ENTERPRISE",
+      "name": "Enterprise",
+      "description": "Tailored for large organizations requiring custom API limits, dedicated infrastructure, premium SLAs, and white-glove onboarding. Pricing is based on your specific requirements.",
+      "pricing": {
+        "monthly": null,
+        "annual": null,
+        "annual_discount_percent": null,
+        "billing_cycles": ["annual", "multi_year"],
+        "custom_pricing": true,
+        "contact": "sales@novadesk.ai",
+        "starting_from": "Contact us for a custom quote"
+      },
+      "api_quotas": {
+        "requests_per_month": -1,
+        "rate_limit_per_minute": -1,
+        "max_payload_size_mb": 50,
+        "concurrent_connections": -1,
+        "note": "All quotas are custom-configured per contract. -1 indicates unlimited/negotiable."
+      },
+      "features": [
+        "Everything in Growth, plus:",
+        "Unlimited API requests (custom-negotiated)",
+        "Custom rate limits tailored to your workload",
+        "Unlimited team members",
+        "Dedicated Customer Success Manager (CSM)",
+        "24/7 priority support with 15-minute P0 response time",
+        "99.95% uptime SLA with service credits",
+        "SSO/SAML authentication integration",
+        "SOC 2 Type II and HIPAA compliance support",
+        "Custom data retention and residency policies",
+        "Dedicated infrastructure and private API endpoints",
+        "Audit logs and compliance reporting",
+        "White-glove onboarding and migration assistance",
+        "Quarterly business reviews with CSM",
+        "Custom webhook and integration development",
+        "Volume-based pricing discounts"
+      ],
+      "support_tier": {
+        "level": "premium",
+        "channels": ["email", "live_chat", "phone", "dedicated_slack", "video_call"],
+        "response_time_hours": 0.25,
+        "availability": "24/7",
+        "dedicated_csm": true,
+        "sla_guarantees": {
+          "p0_critical": "15 minutes",
+          "p1_high": "1 hour",
+          "p2_standard": "4 hours",
+          "p3_low": "1 business day"
+        }
+      },
+      "overage_rates": {
+        "per_request": null,
+        "per_additional_seat_monthly": null,
+        "overage_cap_multiplier": null,
+        "overage_cap_description": "Overage rates and caps are defined in the Master Service Agreement (MSA) and are custom-negotiated per contract."
+      },
+      "limits": {
+        "max_team_members": -1,
+        "max_projects": -1,
+        "max_api_keys": -1,
+        "data_retention_days": -1,
+        "log_retention_days": 365,
+        "note": "-1 indicates unlimited/custom per contract."
+      }
+    }
+  ]
+}

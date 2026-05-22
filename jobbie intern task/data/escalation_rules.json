@@ -1,0 +1,87 @@
+{
+  "company": "NovaDesk AI",
+  "version": "1.0",
+  "last_updated": "2026-05-22",
+  "escalation_rules": [
+    {
+      "id": "ESC-001",
+      "rule_name": "Legal Threat Detection",
+      "description": "Automatically escalates any conversation where the user explicitly or implicitly threatens legal action, mentions attorneys, regulatory complaints, or lawsuits.",
+      "trigger_conditions": [
+        "User message contains keywords: 'lawyer', 'attorney', 'lawsuit', 'legal action', 'sue', 'court', 'regulatory complaint', 'FTC', 'consumer protection'",
+        "Sentiment analysis detects hostile intent combined with legal terminology",
+        "User references specific consumer protection laws or regulations",
+        "User threatens to report the company to a regulatory body"
+      ],
+      "severity": "critical",
+      "action": "Immediately halt automated responses. Transfer conversation to the Legal and Compliance team with full conversation history. Do not attempt to resolve the issue or make any commitments. Respond with: 'I understand this is a serious concern. I'm connecting you with our specialized team who can assist you directly.'",
+      "notify": ["legal_team", "senior_support_lead", "vp_customer_operations"],
+      "sla_minutes": 15,
+      "auto_escalate": true
+    },
+    {
+      "id": "ESC-002",
+      "rule_name": "Repeated Unresolved Issue",
+      "description": "Triggers when a customer contacts support about the same unresolved issue across multiple tickets or conversations, indicating a failure in prior resolution attempts.",
+      "trigger_conditions": [
+        "Customer has opened 3 or more tickets on the same issue within 30 days",
+        "Previous ticket was marked 'resolved' but customer reopened or created a new ticket with the same topic",
+        "Customer explicitly states the issue was not fixed in a prior interaction",
+        "NLP topic clustering identifies the same root issue across multiple conversations"
+      ],
+      "severity": "high",
+      "action": "Assign the ticket to a senior support agent with full history of prior interactions. Compile a resolution timeline and root cause summary. Prioritize this ticket above standard queue. If the issue remains unresolved after the senior agent review, escalate to the Support Engineering team.",
+      "notify": ["senior_support_agent", "support_team_lead"],
+      "sla_minutes": 60,
+      "auto_escalate": false
+    },
+    {
+      "id": "ESC-003",
+      "rule_name": "Low Confidence Validation Failure",
+      "description": "Escalates when the AI system's confidence score for a generated response falls below the acceptable threshold, indicating potential inaccuracy or hallucination risk.",
+      "trigger_conditions": [
+        "Response confidence score is below 0.65 on the retrieval validation check",
+        "No matching FAQ or knowledge base article found for the user's query",
+        "Retrieved context relevance score is below 0.5",
+        "AI self-assessment flags the response as potentially speculative or unsupported"
+      ],
+      "severity": "medium",
+      "action": "Do not deliver the low-confidence response to the user. Instead, present a clarification prompt to gather more context. If clarification does not improve confidence above 0.75, transfer the conversation to a human support agent with the query context and retrieval results attached.",
+      "notify": ["support_agent", "ai_ops_team"],
+      "sla_minutes": 30,
+      "auto_escalate": true
+    },
+    {
+      "id": "ESC-004",
+      "rule_name": "High-Value Refund Request",
+      "description": "Automatically flags and escalates any refund request exceeding $500, whether in a single transaction or cumulative within a 90-day period.",
+      "trigger_conditions": [
+        "Refund amount requested exceeds $500 in a single transaction",
+        "Cumulative refund requests from the same account exceed $500 within a 90-day window",
+        "Refund request involves an annual plan or enterprise contract",
+        "Customer account has a lifetime value (LTV) exceeding $5,000"
+      ],
+      "severity": "high",
+      "action": "Pause automated refund processing. Route to senior support lead for manual review. Pull account history including usage metrics, prior refunds, and payment records. If the refund exceeds $2,000, require Finance team approval. Offer service credits as an alternative resolution before processing a cash refund.",
+      "notify": ["senior_support_lead", "finance_team"],
+      "sla_minutes": 120,
+      "auto_escalate": true
+    },
+    {
+      "id": "ESC-005",
+      "rule_name": "Payment Dispute / Chargeback",
+      "description": "Handles scenarios where a customer initiates a payment dispute or chargeback through their bank or payment provider, which bypasses the standard refund process.",
+      "trigger_conditions": [
+        "Payment provider webhook indicates a dispute or chargeback has been filed",
+        "Customer mentions initiating a chargeback or bank dispute in conversation",
+        "Stripe/payment gateway flags a transaction as disputed",
+        "Customer states they will 'call their bank' or 'reverse the charge'"
+      ],
+      "severity": "critical",
+      "action": "Immediately flag the account and pause any pending transactions. Notify the Disputes team to prepare chargeback evidence (usage logs, consent records, refund policy acknowledgment). Attempt to resolve the issue directly with the customer before the dispute deadline. If the customer is in active conversation, offer a direct refund to prevent the chargeback from being filed.",
+      "notify": ["disputes_team", "finance_team", "senior_support_lead"],
+      "sla_minutes": 30,
+      "auto_escalate": true
+    }
+  ]
+}

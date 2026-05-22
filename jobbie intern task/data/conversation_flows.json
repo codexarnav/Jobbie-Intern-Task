@@ -1,0 +1,559 @@
+{
+  "company": "NovaDesk AI",
+  "version": "1.0",
+  "last_updated": "2026-05-22",
+  "conversation_flows": [
+    {
+      "flow_id": "FLOW-001",
+      "flow_name": "Deterministic FAQ Retrieval",
+      "description": "User asks a straightforward question that directly matches an existing FAQ entry. The system retrieves the exact answer with high confidence.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "How do I update my payment method?",
+          "metadata": {
+            "intent_detected": "billing.update_payment_method",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": []
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "You can update your payment method by navigating to **Settings → Billing → Payment Methods** in your NovaDesk AI dashboard. We accept Visa, Mastercard, American Express, and ACH bank transfers for annual plans. Changes take effect immediately and will apply to your next billing cycle.\n\nWould you like help with anything else?",
+          "metadata": {
+            "intent_detected": "billing.update_payment_method",
+            "retrieval_source": "FAQ-001",
+            "confidence_score": 0.97,
+            "system_action": "deliver_faq_response",
+            "flags": ["deterministic_match"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "No, that's all. Thanks!",
+          "metadata": {
+            "intent_detected": "conversation.close",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "close_conversation",
+            "flags": ["session_end"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "You're welcome! If you need anything in the future, don't hesitate to reach out. Have a great day! 😊",
+          "metadata": {
+            "intent_detected": "conversation.close",
+            "retrieval_source": null,
+            "confidence_score": 1.0,
+            "system_action": "close_conversation",
+            "flags": ["session_end", "csat_survey_triggered"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-002",
+      "flow_name": "Semantic Retrieval — Ambiguous Query",
+      "description": "User asks a question using informal language that doesn't exactly match any FAQ but is semantically similar to one. Tests the system's ability to perform fuzzy matching.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "yo what happens when i blow past my limit on API calls?",
+          "metadata": {
+            "intent_detected": "pricing.overage_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "semantic_search",
+            "flags": ["informal_language"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Great question! When you exceed your monthly API quota, additional requests are billed at your plan's overage rate:\n\n- **Starter**: $0.006 per additional request\n- **Growth**: $0.004 per additional request\n- **Enterprise**: Custom negotiated rates\n\nYou'll receive email alerts at **80%** and **95%** usage thresholds so you can plan ahead. You can also set hard caps in **Settings → API → Usage Limits** to prevent unexpected charges.\n\nWould you like to check your current usage or set up a usage cap?",
+          "metadata": {
+            "intent_detected": "pricing.overage_inquiry",
+            "retrieval_source": "FAQ-003",
+            "confidence_score": 0.89,
+            "system_action": "deliver_semantic_match",
+            "flags": ["semantic_retrieval", "cross_reference_pricing_plans"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-003",
+      "flow_name": "Validation Failure — Low Confidence Response",
+      "description": "User asks a question the system cannot confidently answer from its knowledge base. The confidence score falls below the threshold, triggering a validation failure.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Does NovaDesk AI support real-time streaming responses via WebSocket?",
+          "metadata": {
+            "intent_detected": "product.feature_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "semantic_search",
+            "flags": []
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "That's a great question! I don't have specific information about WebSocket streaming support in our current documentation. I want to make sure you get an accurate answer rather than guessing.\n\nLet me connect you with our technical team who can provide the most up-to-date information on this feature. Would you like me to escalate this to a specialist?",
+          "metadata": {
+            "intent_detected": "product.feature_inquiry",
+            "retrieval_source": null,
+            "confidence_score": 0.31,
+            "system_action": "validation_failure_response",
+            "flags": ["low_confidence", "no_retrieval_match", "hallucination_prevention", "escalation_offered"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "Yes, please connect me.",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "escalate_to_human",
+            "flags": ["human_handoff_accepted"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I've escalated your question to our technical support team. A specialist will be with you shortly — typical wait time is under 10 minutes. They'll have the full context of your question. Thank you for your patience!",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": 1.0,
+            "system_action": "handoff_to_human_agent",
+            "flags": ["escalation_completed", "ticket_created", "ESC-003_triggered"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-004",
+      "flow_name": "Clarification Prompt",
+      "description": "User submits an ambiguous query that could map to multiple intents. The system asks for clarification before responding.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "How much does it cost to use more?",
+          "metadata": {
+            "intent_detected": "ambiguous.pricing_or_upgrade_or_overage",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "trigger_clarification",
+            "flags": ["ambiguous_query", "multi_intent_candidate"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I'd be happy to help with pricing! Just to make sure I give you the right info, could you clarify what you mean by \"use more\"? Are you looking for:\n\n1. **Overage pricing** — cost of exceeding your current API quota\n2. **Plan upgrade** — moving to a higher-tier plan with more features\n3. **Additional seats** — adding more team members to your account\n4. **Something else** — just let me know!\n\nWhich one best fits what you're looking for?",
+          "metadata": {
+            "intent_detected": "ambiguous.pricing_or_upgrade_or_overage",
+            "retrieval_source": null,
+            "confidence_score": 0.52,
+            "system_action": "clarification_prompt_sent",
+            "flags": ["clarification_required", "disambiguation_options_presented"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "Option 1 — the overage cost.",
+          "metadata": {
+            "intent_detected": "pricing.overage_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_clarified_query",
+            "flags": ["clarification_received", "intent_resolved"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Got it! Here are the overage rates for each plan:\n\n| Plan | Overage Rate | Overage Cap |\n|------|-------------|-------------|\n| **Starter** | $0.006/request | 2x monthly quota (20,000 max) |\n| **Growth** | $0.004/request | 3x monthly quota (150,000 max) |\n| **Enterprise** | Custom | Per MSA terms |\n\nYou can set hard usage caps in **Settings → API → Usage Limits** to prevent unexpected charges. You'll also get email alerts at 80% and 95% usage.\n\nWant me to check your current plan's usage?",
+          "metadata": {
+            "intent_detected": "pricing.overage_inquiry",
+            "retrieval_source": "FAQ-003",
+            "confidence_score": 0.95,
+            "system_action": "deliver_clarified_response",
+            "flags": ["intent_resolved", "cross_reference_pricing_plans"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-005",
+      "flow_name": "Loop Detection — Repeated Question",
+      "description": "User asks the same question multiple times in the same conversation. The system detects the loop pattern and offers human escalation.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "What's the rate limit for the API?",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": ["repeat_count_1"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Rate limits vary by plan:\n\n- **Starter**: 60 requests/minute, 10,000 requests/month\n- **Growth**: 200 requests/minute, 50,000 requests/month\n- **Enterprise**: Custom rate limits per contract\n\nIf you exceed the rate limit, you'll receive a `429 Too Many Requests` response with a `Retry-After` header. Need more details?",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": "FAQ-006",
+            "confidence_score": 0.96,
+            "system_action": "deliver_faq_response",
+            "flags": ["deterministic_match"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "But what's the rate limit though?",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": ["repeat_count_2", "possible_loop"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "As I mentioned, the rate limits are:\n\n- **Starter**: 60 requests/minute\n- **Growth**: 200 requests/minute\n- **Enterprise**: Custom\n\nIs there something specific about rate limits I can clarify? For example, are you experiencing rate limiting issues, or do you need to know about rate limit headers in API responses?",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": "FAQ-006",
+            "confidence_score": 0.96,
+            "system_action": "deliver_faq_response_with_clarification",
+            "flags": ["repeat_detected", "clarification_appended"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "How many requests can I make per minute?",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "loop_detection_triggered",
+            "flags": ["repeat_count_3", "loop_confirmed"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I notice I've shared this information a couple of times, and I want to make sure I'm actually addressing what you need. It seems like my previous answers might not have covered your specific concern.\n\nWould you like me to connect you with a support agent who can dive deeper into your rate limit questions? They can also check your account's current usage and recommend the best configuration for your needs.",
+          "metadata": {
+            "intent_detected": "api.rate_limit_inquiry",
+            "retrieval_source": "FAQ-006",
+            "confidence_score": 0.96,
+            "system_action": "loop_detection_escalation_offer",
+            "flags": ["loop_detected", "escalation_offered", "repeat_count_3"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "Yeah actually that would be great.",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "escalate_to_human",
+            "flags": ["human_handoff_accepted"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I've connected you with a support agent who will have the full context of our conversation. They should be with you in just a moment. Thanks for your patience! 🙌",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": 1.0,
+            "system_action": "handoff_to_human_agent",
+            "flags": ["escalation_completed", "loop_resolved", "ticket_created"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-006",
+      "flow_name": "Human-in-the-Loop Escalation",
+      "description": "A complex billing issue that the AI cannot fully resolve autonomously. The system recognizes its limitations and proactively escalates to a human agent.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "I was billed $297 on my credit card but my plan is only $99/month. I didn't authorize any additional charges. This needs to be fixed right now.",
+          "metadata": {
+            "intent_detected": "billing.dispute_unauthorized_charge",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": ["billing_dispute", "urgency_detected"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I completely understand your concern about the unexpected charge, and I want to help get this resolved for you right away.\n\nA $297 charge on a $99/month plan could potentially be due to:\n- Overage fees from exceeding your API quota\n- An additional seat purchase\n- A billing system error\n\nHowever, to investigate a charge discrepancy of this size and ensure you receive the correct resolution, I'd like to connect you with a billing specialist who has full access to your payment records. They can review the charge breakdown in detail.\n\nShall I escalate this now? I'll make sure they have all the context from our conversation.",
+          "metadata": {
+            "intent_detected": "billing.dispute_unauthorized_charge",
+            "retrieval_source": "FAQ-002",
+            "confidence_score": 0.78,
+            "system_action": "partial_response_with_escalation_offer",
+            "flags": ["billing_dispute", "amount_exceeds_plan_cost", "human_escalation_recommended"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "Yes, escalate it immediately.",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "escalate_to_human",
+            "flags": ["human_handoff_accepted", "urgency_high"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Done! I've created a priority ticket and a billing specialist has been assigned to your case. Here's what to expect:\n\n- **Ticket ID**: #BIL-20260522-4891\n- **Priority**: High\n- **Estimated response time**: Within 1 hour\n- **Specialist assigned**: Billing Resolution Team\n\nThey'll have the full context of your issue, including the $297 charge details. If you don't hear back within the hour, reply here and I'll re-escalate immediately.",
+          "metadata": {
+            "intent_detected": "escalation.accept",
+            "retrieval_source": null,
+            "confidence_score": 1.0,
+            "system_action": "handoff_to_human_agent",
+            "flags": ["escalation_completed", "priority_ticket_created", "sla_1_hour"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-007",
+      "flow_name": "Personalized Memory Retrieval — Returning Customer",
+      "description": "A returning customer contacts support. The system retrieves prior interaction history and personalizes the response based on the customer's profile and previous issues.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "Hi, I'm back again. I had an issue with my API keys last month — is that fixed now?",
+          "metadata": {
+            "intent_detected": "followup.prior_issue_status",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "retrieve_customer_history",
+            "flags": ["returning_customer", "prior_issue_reference"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Welcome back, Sarah! 👋 I can see from your previous conversation on April 18th that you reported an issue with API key rotation causing temporary 401 errors on your Growth plan.\n\nHere's an update: Our engineering team deployed a fix for the key rotation synchronization issue on April 25th (patch v2.14.3). The fix ensures that new API keys become active within 30 seconds of rotation instead of the previous 5-minute propagation delay.\n\n**Your current account status:**\n- Plan: Growth ($99/month)\n- API keys: 8 active (all functioning normally)\n- Last 7 days: No 401 errors detected\n\nAre you still experiencing any issues, or is there something else I can help with?",
+          "metadata": {
+            "intent_detected": "followup.prior_issue_status",
+            "retrieval_source": "customer_history.ticket_TK-20260418-3201",
+            "confidence_score": 0.93,
+            "system_action": "deliver_personalized_response",
+            "flags": ["returning_customer", "memory_retrieval", "account_context_loaded", "prior_ticket_referenced"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "Oh awesome, that's fixed then. Thanks Sarah— I mean, thanks! One more thing — can I add 2 more team members?",
+          "metadata": {
+            "intent_detected": "account.add_team_members",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": []
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Of course! Your Growth plan supports up to 15 team members, and you currently have 8. So you've got room for 7 more! 🎉\n\nTo add new team members:\n1. Go to **Settings → Team → Members**\n2. Click **Invite Member**\n3. Enter their email addresses\n4. Assign roles and permissions\n\nNew members will receive an invitation email and can start using the platform immediately after accepting. No additional cost since you're within your plan's seat limit.\n\nWant me to walk you through anything else?",
+          "metadata": {
+            "intent_detected": "account.add_team_members",
+            "retrieval_source": "FAQ-014",
+            "confidence_score": 0.94,
+            "system_action": "deliver_personalized_response",
+            "flags": ["account_context_used", "seat_availability_checked"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-008",
+      "flow_name": "Refund Dispute",
+      "description": "User requests a refund but their account does not qualify under the standard refund policy. The system navigates the dispute diplomatically.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "I want a full refund for this month. I barely used the service.",
+          "metadata": {
+            "intent_detected": "refund.request",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "check_refund_eligibility",
+            "flags": ["refund_request"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I understand you'd like a refund for this month's charge. Let me check your account details.\n\nAfter reviewing your account, here's what I found:\n\n- **Plan**: Growth ($99/month)\n- **Charge date**: May 1, 2026\n- **API usage this month**: 38,400 of 50,000 requests (76.8% consumed)\n- **Prior refunds**: 1 refund processed on February 12, 2026\n\nUnfortunately, your account has consumed 76.8% of this month's API quota, which exceeds the 20% usage threshold for our standard refund policy. Based on our refund terms, usage-based charges are non-refundable once the API calls have been consumed.\n\nHowever, I'd like to help find a solution. Would you like me to:\n1. Apply a **prorated credit** toward next month's bill\n2. Review if a **plan downgrade** might better fit your usage needs\n3. Escalate to a **billing specialist** for further review\n\nWhat would you prefer?",
+          "metadata": {
+            "intent_detected": "refund.request",
+            "retrieval_source": "RP-001",
+            "confidence_score": 0.91,
+            "system_action": "refund_eligibility_check_failed",
+            "flags": ["refund_ineligible", "usage_threshold_exceeded", "alternative_solutions_offered"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "That's not fair. I didn't even mean to use that many calls — it was a bug in my code that kept hitting the API. I shouldn't have to pay for that.",
+          "metadata": {
+            "intent_detected": "refund.dispute",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_dispute",
+            "flags": ["refund_dispute", "frustration_detected"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I completely understand — that's a frustrating situation, and I'm sorry you're dealing with it. Unintended API usage from a code bug is something we've seen before, and I want to make sure we handle this fairly.\n\nWhile our standard policy doesn't cover refunds when usage exceeds 20%, I think this situation warrants a closer look by our billing team. They have the authority to review cases like accidental overuse and can make exceptions.\n\nI'm escalating this to a senior billing specialist right now with a note about the circumstances. Here's what I've documented:\n\n- **Reason**: Unintended API consumption due to application bug\n- **Usage context**: Potentially automated/unintended calls\n- **Customer request**: Full refund review\n\n**Ticket ID**: #REF-20260522-7834\n**Expected response**: Within 4 hours\n\nI'll make sure your case gets the attention it deserves. Is there anything else I can help with in the meantime?",
+          "metadata": {
+            "intent_detected": "refund.dispute",
+            "retrieval_source": "RP-001",
+            "confidence_score": 0.88,
+            "system_action": "escalate_refund_dispute",
+            "flags": ["refund_dispute", "empathy_response", "escalation_initiated", "exception_review_requested"]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-009",
+      "flow_name": "Enterprise Escalation",
+      "description": "An enterprise customer reports a critical issue that triggers the enterprise SLA escalation path, including CSM involvement and priority routing.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "This is Marcus from Dataflow Corp. Our entire production pipeline has been down for 20 minutes because your API is returning 503 errors. We're losing revenue every minute. This needs to be fixed NOW.",
+          "metadata": {
+            "intent_detected": "enterprise.critical_outage_report",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "enterprise_priority_routing",
+            "flags": ["enterprise_customer", "p0_critical", "production_outage", "urgency_critical"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Marcus, thank you for reporting this — I understand this is a critical production issue and I'm treating it with the highest urgency.\n\n**Immediate actions taken:**\n\n1. ✅ **P0 Critical ticket created**: #ENT-20260522-0091\n2. ✅ **On-call engineering team notified** — response within 15 minutes per your SLA\n3. ✅ **Your CSM (Jennifer Walsh) has been alerted** and will be available for a direct update\n4. ✅ **Status page checked**: We are currently investigating elevated 503 error rates in the US-East region\n\n**Current known status:**\nOur infrastructure team identified an issue with the US-East API gateway at 15:09 UTC. A mitigation is being deployed now. Estimated resolution: within 30 minutes.\n\n**Your SLA commitment:**\n- P0 response time: 15 minutes ✅ (responded in 3 minutes)\n- Service credits will be automatically calculated for any downtime exceeding the 99.95% SLA threshold\n\nI'll provide updates every 10 minutes until this is resolved. Can you confirm which API endpoints are affected so I can relay that to the engineering team?",
+          "metadata": {
+            "intent_detected": "enterprise.critical_outage_report",
+            "retrieval_source": "FAQ-013",
+            "confidence_score": 0.98,
+            "system_action": "enterprise_p0_escalation",
+            "flags": [
+              "enterprise_sla_triggered",
+              "p0_critical",
+              "csm_notified",
+              "engineering_notified",
+              "status_page_checked",
+              "service_credits_applicable"
+            ]
+          }
+        },
+        {
+          "role": "user",
+          "content": "It's the /v2/inference and /v2/batch-process endpoints. We need this fixed in the next 10 minutes or we'll need to switch to our failover provider.",
+          "metadata": {
+            "intent_detected": "enterprise.outage_update",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "relay_to_engineering",
+            "flags": ["endpoint_details_provided", "churn_risk_detected"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "Understood — I've relayed the specific endpoints (`/v2/inference` and `/v2/batch-process`) to the engineering team immediately.\n\n**Update (15:25 UTC):**\nThe engineering team has deployed a hotfix to the US-East API gateway. Initial metrics show 503 errors dropping significantly. The `/v2/inference` endpoint is responding normally as of 15:23 UTC. The `/v2/batch-process` endpoint is recovering and should be fully operational within the next 3-5 minutes.\n\nCan you test the `/v2/inference` endpoint on your side to confirm it's working? I'll stay with you until everything is confirmed stable.\n\nYour CSM Jennifer will also be reaching out within the hour to discuss service credits and a post-incident review.",
+          "metadata": {
+            "intent_detected": "enterprise.outage_update",
+            "retrieval_source": null,
+            "confidence_score": 0.95,
+            "system_action": "relay_engineering_update",
+            "flags": [
+              "engineering_update_received",
+              "partial_resolution",
+              "csm_followup_scheduled",
+              "service_credits_pending"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "flow_id": "FLOW-010",
+      "flow_name": "Legal Threat Escalation",
+      "description": "User becomes increasingly hostile and explicitly threatens legal action. The system detects legal language and immediately escalates per ESC-001.",
+      "turns": [
+        {
+          "role": "user",
+          "content": "I've been trying to get a refund for three weeks and nobody has helped me. This is unacceptable.",
+          "metadata": {
+            "intent_detected": "refund.complaint",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "process_query",
+            "flags": ["frustration_detected", "prior_unresolved_issue"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I'm really sorry to hear you've been waiting this long for a resolution — three weeks is far too long and I completely understand your frustration. Let me look into your refund request right now and see where things stand.\n\nCould you share your ticket number or the email address associated with your account so I can pull up your case?",
+          "metadata": {
+            "intent_detected": "refund.complaint",
+            "retrieval_source": "FAQ-005",
+            "confidence_score": 0.82,
+            "system_action": "empathy_response_with_information_request",
+            "flags": ["empathy_first", "information_gathering"]
+          }
+        },
+        {
+          "role": "user",
+          "content": "The ticket is #REF-20260501-2234. I've emailed support 5 times with no response. If this isn't resolved today, I'm contacting my attorney and filing a complaint with the FTC. I'm done being ignored.",
+          "metadata": {
+            "intent_detected": "legal_threat",
+            "retrieval_source": null,
+            "confidence_score": null,
+            "system_action": "legal_threat_detection",
+            "flags": ["legal_threat_detected", "attorney_mentioned", "ftc_mentioned", "escalation_required"]
+          }
+        },
+        {
+          "role": "assistant",
+          "content": "I hear you, and I take this very seriously. Being ignored for three weeks is not the experience we want any customer to have, and I sincerely apologize.\n\nI understand this is a serious concern. Because of the nature of your request, I'm immediately connecting you with our specialized resolution team who has the authority and access to resolve this directly. They will have your complete case history, including ticket #REF-20260501-2234 and the full context of our conversation.\n\n**Actions taken:**\n- ✅ Your case has been flagged as **critical priority**\n- ✅ Senior resolution team and management have been notified\n- ✅ Estimated contact time: within **15 minutes**\n\nA member of our team will reach out to you directly. Thank you for your patience, and again, I apologize for the delay you've experienced.",
+          "metadata": {
+            "intent_detected": "legal_threat",
+            "retrieval_source": null,
+            "confidence_score": 1.0,
+            "system_action": "legal_escalation_triggered",
+            "flags": [
+              "ESC-001_triggered",
+              "legal_team_notified",
+              "senior_support_lead_notified",
+              "vp_customer_operations_notified",
+              "automated_responses_halted",
+              "sla_15_minutes",
+              "conversation_locked"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
